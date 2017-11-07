@@ -46,11 +46,13 @@ class Advanced_Pdf_Generator_Public {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    0.1.0
+	 * @since    0.2.0
 	 * @param      string    $plugin_name       The name of the plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
+
+		ob_start();
 
 		$this->advanced_pdf_generator = $plugin_name;
 		$this->version = $version;
@@ -60,7 +62,7 @@ class Advanced_Pdf_Generator_Public {
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
-	 * @since    0.1.0
+	 * @since    0.2.0
 	 */
 	public function enqueue_styles() {
 
@@ -76,14 +78,14 @@ class Advanced_Pdf_Generator_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->advanced_pdf_generator, plugin_dir_url( __FILE__ ) . 'css/plugin-name-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->advanced_pdf_generator, plugin_dir_url( __FILE__ ) . 'css/advanced-pdf-generator-public.css', array(), $this->version, 'all' );
 
 	}
 
 	/**
 	 * Register the JavaScript for the public-facing side of the site.
 	 *
-	 * @since    0.1.0
+	 * @since    0.2.0
 	 */
 	public function enqueue_scripts() {
 
@@ -99,7 +101,7 @@ class Advanced_Pdf_Generator_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->advanced_pdf_generator, plugin_dir_url( __FILE__ ) . 'js/plugin-name-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->advanced_pdf_generator, plugin_dir_url( __FILE__ ) . 'js/advanced-pdf-generator-public.js', array( 'jquery' ), $this->version, false );
 
 	}
 
@@ -115,12 +117,12 @@ class Advanced_Pdf_Generator_Public {
 	/**
 	 * Shortcode function for advanced-pdf-generator tag
 	 *
-	 * @since	0.1.0
+	 * @since	0.2.0
 	 *
 	 */
 	public function advanced_pdf_generator_shortcode( $atts = [] ) {
 
-		$content = "";
+		$content = "<ul id=\"advanced-pdf-generator\">";
 
 		$atts = shortcode_atts( array(
 			'download'			=> isset($atts['download']) ? true : false,
@@ -143,7 +145,7 @@ class Advanced_Pdf_Generator_Public {
 		$send = $atts['send'];
 		$view = $atts['view'];
 
-		if( $view || $download ) {
+		if( $view || $download || $send ) {
 			$file_url = $this->generate_pdf();
 		}
 
@@ -208,6 +210,8 @@ class Advanced_Pdf_Generator_Public {
 			}
 		}
 
+		$content .= '</ul>';
+
 		return $content;
 	}
 
@@ -235,6 +239,7 @@ class Advanced_Pdf_Generator_Public {
 		$dompdf->render();
 		$output = $dompdf->output();
 
+		ob_start();
 		if(!session_id()) {
 			session_start();
 		}

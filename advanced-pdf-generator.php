@@ -9,14 +9,14 @@
  * that starts the plugin.
  *
  * @link              https://wordpress.org/plugins/advanced-pdf-generator
- * @since             0.1.0
+ * @since             0.2.0
  * @package           Advanced_Pdf_Generator
  *
  * @wordpress-plugin
  * Plugin Name:       Advanced PDF Generator
  * Plugin URI:        https://wordpress.org/plugins/advanced-pdf-generator/
  * Description:       Create PDF from template files
- * Version:           0.1.0
+ * Version:           0.2.0
  * Author:            jcmlmorav
  * Author URI:        https://github.com/jcmlmorav/advanced-pdf-generator
  * License:           GPL-2.0+
@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'ADVANCED_PDF_GENERATOR_VERSION', '0.1.0' );
+define( 'ADVANCED_PDF_GENERATOR_VERSION', '0.2.0' );
 
 /**
  * The code that runs during plugin activation.
