@@ -62,7 +62,7 @@ class Advanced_Pdf_Generator_Public {
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
-	 * @since    0.2.0
+	 * @since    0.3.0
 	 */
 	public function enqueue_styles() {
 
@@ -79,13 +79,14 @@ class Advanced_Pdf_Generator_Public {
 		 */
 
 		wp_enqueue_style( $this->advanced_pdf_generator, plugin_dir_url( __FILE__ ) . 'css/advanced-pdf-generator-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->advanced_pdf_generator.'-swal', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.min.css', array(), $this->version, 'all' );
 
 	}
 
 	/**
 	 * Register the JavaScript for the public-facing side of the site.
 	 *
-	 * @since    0.2.0
+	 * @since    0.3.0
 	 */
 	public function enqueue_scripts() {
 
@@ -101,6 +102,7 @@ class Advanced_Pdf_Generator_Public {
 		 * class.
 		 */
 
+		wp_enqueue_script( $this->advanced_pdf_generator.'-swal', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.all.min.js', array(), $this->version, false );
 		wp_enqueue_script( $this->advanced_pdf_generator, plugin_dir_url( __FILE__ ) . 'js/advanced-pdf-generator-public.js', array( 'jquery' ), $this->version, false );
 
 	}
@@ -117,7 +119,7 @@ class Advanced_Pdf_Generator_Public {
 	/**
 	 * Shortcode function for advanced-pdf-generator tag
 	 *
-	 * @since	0.2.0
+	 * @since	0.3.0
 	 *
 	 */
 	public function advanced_pdf_generator_shortcode( $atts = [] ) {
@@ -163,24 +165,27 @@ class Advanced_Pdf_Generator_Public {
 			$email_label = $atts['email_label'];
 			$email_placeholder = $atts['email_placeholder'];
 			$submit_label = $atts['submit_label'];
-			$content .= "<li><a class=\"$this->advanced_pdf_generator $send_class\" href=\"#\" data-toggle=\"modal\" data-target=\"#modal-send\">$send_text</a></li>
-			<section id=\"modal-send\" class=\"modal animated fadeInDown\">
-			    <div class=\"lightbox-email\">
-			        <form action=\"" . esc_url( $_SERVER['REQUEST_URI'] ) . "\" method=\"POST\">
-			            <div class=\"close\"  data-dismiss=\"modal\">x</div>
-			            <div class=\"cont-input full\">
-			                <label>$name_label</label>
-			                <input name=\"names\" type=\"text\" placeholder=\"$name_placeholder\" required>
-			            </div>
-			            <div class=\"cont-input full\">
-			                <label>$email_label</label>
-			                <input name=\"email\" type=\"email\" placeholder=\"$email_placeholder\" required>
-			            </div>
-						<input name=\"file_url\" type=\"hidden\" value=\"$file_url\">
-			            <input type=\"submit\" name=\"send-$this->advanced_pdf_generator\" value=\"$submit_label\">
-			        </form>
-			    </div>
-			</section> ";
+			$content .= "<li><a class=\"$this->advanced_pdf_generator $send_class\" href=\"javascript:;\" onclick=\"send_apdfg()\" data-toggle=\"modal\" data-target=\"#modal-send\">$send_text</a></li>
+			<script>
+				function send_apdfg() {
+					swal({
+						html: '<form id=\"apdfg-send-email\" action=\"" . esc_url( $_SERVER['REQUEST_URI'] ) . "\" method=\"POST\">'+
+								'<div class=\"cont-input full\">'+
+									'<label>$name_label</label>'+
+									'<input name=\"names\" type=\"text\" placeholder=\"$name_placeholder\" required>'+
+								'</div>'+
+								'<div class=\"cont-input full\">'+
+									'<label>$email_label</label>'+
+									'<input name=\"email\" type=\"email\" placeholder=\"$email_placeholder\" required>'+
+								'</div>'+
+								'<input name=\"file_url\" type=\"hidden\" value=\"$file_url\">'+
+								'<input class=\"submit\" type=\"submit\" name=\"send-$this->advanced_pdf_generator\" value=\"$submit_label\">'+
+							'</form>',
+						showConfirmButton: false,
+						showCloseButton: true
+					});
+				}
+			</script> ";
 		}
 
 		if( $view ) {
@@ -192,21 +197,23 @@ class Advanced_Pdf_Generator_Public {
 		if( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 			$email = $this->send_email();
 			if( $email ) {
-				$content .= "<section id=\"modal-mail\" class=\"modal animated fadeInDown\">
-				    <div class=\"lightbox-email\">
-					<div class=\"close\"  data-dismiss=\"modal\">x</div>
-				        <p>E-mail sent!</p>
-				    </div>
-				</section>
-				<script>(function(){setTimeout(function(){jQuery('#modal-mail').modal('show');},1000);})();</script>";
+				$content .= "<script>
+				window.onload = function() {
+					swal({
+						title: 'Email sent!',
+						type: 'success'
+					});
+				 }
+				</script>";
 			} else {
-				$content .= "<section id=\"modal-mail\" class=\"modal animated fadeInDown\">
-				    <div class=\"lightbox-email\">
-					<div class=\"close\"  data-dismiss=\"modal\">x</div>
-				        <p>E-mail NOT sent!</p>
-				    </div>
-				</section>
-				<script>(function(){setTimeout(function(){jQuery('#modal-mail').modal('show');},1000);})();</script>";
+				$content .= "<script>
+				window.onload = function() {
+					swal({
+						title: 'Email NOT sent!',
+						type: 'error'
+					});
+				 }
+				</script>";
 			}
 		}
 
@@ -268,7 +275,7 @@ class Advanced_Pdf_Generator_Public {
 	/**
 	 * Send email if send options is enabled and triggered
 	 *
-	 * @since	0.1.0
+	 * @since	0.3.0
 	 *
 	 */
 	public function send_email() {
@@ -281,7 +288,7 @@ class Advanced_Pdf_Generator_Public {
 
 		$template = $this->get_template_file( get_template_directory() . '/apg-templates/mail.php', $name, $file_url );
 		if(!$template) {
-			$template = "<p>Hello, <br> Here is your PDF file: $file_url</p>";
+			$template = "<p>Hello $name, <br> Here is your PDF file: $file_url</p>";
 		}
 
 		if( wp_mail($to, 'PDF', $template, $headers) ) {

@@ -64,13 +64,13 @@ class Advanced_Pdf_Generator {
 	 * Load the dependencies, define the locale, and set the hooks for the admin area and
 	 * the public-facing side of the site.
 	 *
-	 * @since    0.1.0
+	 * @since    0.3.0
 	 */
 	public function __construct() {
 		if ( defined( 'ADVANCED_PDF_GENERATOR_VERSION' ) ) {
 			$this->version = ADVANCED_PDF_GENERATOR_VERSION;
 		} else {
-			$this->version = '0.1.0';
+			$this->version = '0.3.0';
 		}
 		$this->advanced_pdf_generator = 'advanced-pdf-generator';
 
