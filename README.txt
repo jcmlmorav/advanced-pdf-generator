@@ -1,11 +1,12 @@
 === Advanced PDF Generator ===
 Contributors: jcmlmorav
+Donate link: https://www.paypal.me/jcmlmorav
 Tags: PDF, Templates, View, Download, Send, Email, DomPDF
 Requires at least: 4.5
 Tested up to: 4.8.3
 Requires PHP: 5.6.1
 Tested PHP up to: 7.0
-Stable tag: 0.3.0
+Stable tag: 0.3.1
 Plugin URI: https://github.com/jcmlmorav/advanced-pdf-generator
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -43,9 +44,7 @@ Follow next steps for customize labels, texts and function
 
 **Important:** If you want to send PDF via email, you need the correct setup to send emails from your WP site
 
-`[advanced-pdf-generator send="true" send_text="Send PDF" send_class="send-apdfg-link" name_label="Name" name_placeholder="Write your name" email_label="E-mail" email_placeholder="Write your email" submit_label="Send"] `
-
-
+`[advanced-pdf-generator send="true" send_text="Send PDF" send_class="send-apdfg-link" name_label="Name" name_placeholder="Write your name" email_label="E-mail" email_placeholder="Write your email" submit_label="Send"]`
 
 == Templates ==
 

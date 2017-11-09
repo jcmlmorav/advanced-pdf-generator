@@ -22,6 +22,7 @@
  */
 
 use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class Advanced_Pdf_Generator_Public {
 
@@ -119,7 +120,7 @@ class Advanced_Pdf_Generator_Public {
 	/**
 	 * Shortcode function for advanced-pdf-generator tag
 	 *
-	 * @since	0.3.0
+	 * @since	0.3.1
 	 *
 	 */
 	public function advanced_pdf_generator_shortcode( $atts = [] ) {
@@ -179,7 +180,7 @@ class Advanced_Pdf_Generator_Public {
 									'<input name=\"email\" type=\"email\" placeholder=\"$email_placeholder\" required>'+
 								'</div>'+
 								'<input name=\"file_url\" type=\"hidden\" value=\"$file_url\">'+
-								'<input class=\"submit\" type=\"submit\" name=\"send-$this->advanced_pdf_generator\" value=\"$submit_label\">'+
+								'<input class=\"submit\" type=\"submit\" name=\"send-apdfg\" value=\"$submit_label\">'+
 							'</form>',
 						showConfirmButton: false,
 						showCloseButton: true
@@ -194,7 +195,7 @@ class Advanced_Pdf_Generator_Public {
 			$content .= "<li><a class=\"$this->advanced_pdf_generator $view_class\" target=\"_blank\" href=\"$file_url\">$view_text</a></li> ";
 		}
 
-		if( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
+		if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send-apdfg']) ) {
 			$email = $this->send_email();
 			if( $email ) {
 				$content .= "<script>
@@ -226,11 +227,15 @@ class Advanced_Pdf_Generator_Public {
 	 * Render PDF, save in uploads directory
 	 *
 	 * @return	$file_url
-	 * @since	0.1.0
+	 * @since	0.3.1
 	 *
 	 */
 	public function generate_pdf() {
-		$dompdf = new Dompdf();
+		$options = new Options();
+		$options->set('isRemoteEnabled', true);
+		$options->set('defaultFont', 'Helvetica');
+
+		$dompdf = new Dompdf($options);
 
 		$uploads = wp_upload_dir();
 		if( !file_exists($uploads['basedir'].'/'.$this->advanced_pdf_generator) ) {
