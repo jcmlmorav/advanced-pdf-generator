@@ -43,7 +43,9 @@ Follow next steps for customize labels, texts and function
 
 **Important:** If you want to send PDF via email, you need the correct setup to send emails from your WP site
 
-`[advanced-pdf-generator send="true" send_text="Send PDF" send_class="send-apdfg-link" name_label="Name" name_placeholder="Write your name" email_label="E-mail" email_placeholder="Write your email" submit_label="Send"]`
+`[advanced-pdf-generator send="true" send_text="Send PDF" send_class="send-apdfg-link" name_label="Name" name_placeholder="Write your name" email_label="E-mail" email_placeholder="Write your email" submit_label="Send"] `
+
+
 
 == Templates ==
 
