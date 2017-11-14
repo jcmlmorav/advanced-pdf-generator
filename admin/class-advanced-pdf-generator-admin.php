@@ -25,16 +25,16 @@ class Advanced_Pdf_Generator_Admin {
 	/**
 	 * The ID of this plugin.
 	 *
-	 * @since    0.1.0
+	 * @since    0.4.0
 	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @var      string    $advanced_pdf_generator    The ID of this plugin.
 	 */
-	private $plugin_name;
+	private $advanced_pdf_generator;
 
 	/**
 	 * The version of this plugin.
 	 *
-	 * @since    0.1.0
+	 * @since    0.4.0
 	 * @access   private
 	 * @var      string    $version    The current version of this plugin.
 	 */
@@ -43,13 +43,13 @@ class Advanced_Pdf_Generator_Admin {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    0.1.0
-	 * @param      string    $plugin_name       The name of this plugin.
+	 * @since    0.4.0
+	 * @param      string    $advanced_pdf_generator       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $advanced_pdf_generator, $version ) {
 
-		$this->plugin_name = $plugin_name;
+		$this->advanced_pdf_generator = $advanced_pdf_generator;
 		$this->version = $version;
 
 	}
@@ -57,7 +57,7 @@ class Advanced_Pdf_Generator_Admin {
 	/**
 	 * Register the stylesheets for the admin area.
 	 *
-	 * @since    0.1.0
+	 * @since    0.4.0
 	 */
 	public function enqueue_styles() {
 
@@ -73,14 +73,14 @@ class Advanced_Pdf_Generator_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/plugin-name-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->advanced_pdf_generator, plugin_dir_url( __FILE__ ) . 'css/advanced-pdf-generator-admin.css', array(), $this->version, 'all' );
 
 	}
 
 	/**
 	 * Register the JavaScript for the admin area.
 	 *
-	 * @since    0.1.0
+	 * @since    0.4.0
 	 */
 	public function enqueue_scripts() {
 
@@ -96,8 +96,60 @@ class Advanced_Pdf_Generator_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->advanced_pdf_generator, plugin_dir_url( __FILE__ ) . 'js/advanced-pdf-generator-admin.js', array( 'jquery' ), $this->version, false );
 
+	}
+
+	/**
+	 * Function to register administration screen for plugin Options
+	 *
+	 * @since 0.4.0
+	 */
+	public function advanced_pdf_generator_menu() {
+		add_menu_page( 'Advanced PDF Generator', 'Advanced PDF Generator', 'manage_options', $this->advanced_pdf_generator, array( $this, 'load_admin_page_content' ) );
+	}
+
+	/**
+	 * Load file that contains the page render code
+	 *
+	 * @since 0.4.0
+	 */
+	public function load_admin_page_content() {
+		global $wpdb;
+
+		$table_apdfg_values = $wpdb->prefix . 'apdfg_values';
+
+		if( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
+			$values = $wpdb->get_row( "SELECT * FROM $table_apdfg_values LIMIT 1", OBJECT );
+			$wpdb->update(
+				$table_apdfg_values,
+				array(
+					'download_text' 	=> $_POST['download_text'],
+					'download_class' 	=> $_POST['download_class'],
+					'send_text' 		=> $_POST['send_text'],
+					'send_class' 		=> $_POST['send_class'],
+					'name_label' 		=> $_POST['name_label'],
+					'name_placeholder' 	=> $_POST['name_placeholder'],
+					'email_label' 		=> $_POST['email_label'],
+					'email_placeholder' => $_POST['email_placeholder'],
+					'success_message' 	=> $_POST['success_message'],
+					'error_message' 	=> $_POST['error_message'],
+					'submit_label' 		=> $_POST['submit_label'],
+					'view_text' 		=> $_POST['view_text'],
+					'view_class' 		=> $_POST['view_class']
+				),
+				array( 'id' => $values->id )
+			);
+			?>
+			<div class="notice notice-success is-dismissible">
+	            <p><?php _e( 'Values updated!', 'apdfg' ); ?></p>
+	        </div>
+			<?php
+		}
+
+		$values = $wpdb->get_row( "SELECT * FROM $table_apdfg_values LIMIT 1", OBJECT );
+
+		require_once plugin_dir_path( __FILE__ ) . 'partials/advanced-pdf-generator-admin-display.php';
 	}
 
 }

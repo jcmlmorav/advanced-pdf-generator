@@ -148,7 +148,7 @@ class Advanced_Pdf_Generator {
 	 * Register all of the hooks related to the admin area functionality
 	 * of the plugin.
 	 *
-	 * @since    0.1.0
+	 * @since    0.4.0
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
@@ -157,6 +157,8 @@ class Advanced_Pdf_Generator {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'advanced_pdf_generator_menu' );
 
 	}
 
