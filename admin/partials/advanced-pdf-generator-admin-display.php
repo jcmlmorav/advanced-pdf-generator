@@ -5,10 +5,10 @@
  *
  * This file is used to markup the admin-facing aspects of the plugin.
  *
- * @link       http://example.com
- * @since      0.1.0
+ * @link       https://wordpress.org/plugins/advanced-pdf-generator
+ * @since      0.4.0
  *
- * @package    Plugin_Name
+ * @package    Advanced_Pdf_Generator
  * @subpackage Plugin_Name/admin/partials
  */
 ?>
@@ -18,7 +18,7 @@
     <h1>Advanced PDF Generator</h1>
     <form method="post">
         <p>Advanced PDF Generator plugin allows to you the possibility to change by default the labels value to show in public face side without use the parameters into the shortcode, but you can keep parameters in the shortcode for more customization.</p>
-        <h2 class="title">Download</h2>
+        <h2 class="title"><input type="checkbox" name="download" value="download" <?php if($values->download) { echo 'checked="checked"'; }  ?>> Download</h2>
         <table class="form-table advanced-pdf-generator">
             <tr>
                 <th>
@@ -35,7 +35,7 @@
                 </th>
             </tr>
         </table>
-        <h2 class="title">Send</h2>
+        <h2 class="title"><input type="checkbox" name="send" value="send" <?php if($values->send) { echo 'checked="checked"'; }  ?>> Send</h2>
         <table class="form-table advanced-pdf-generator">
             <tr>
                 <th>
@@ -102,7 +102,7 @@
                 </th>
             </tr>
         </table>
-        <h2 class="title">View</h2>
+        <h2 class="title"><input type="checkbox" name="view" value="view" <?php if($values->view) { echo 'checked="checked"'; }  ?>> View</h2>
         <table class="form-table advanced-pdf-generator">
             <tr>
                 <th>

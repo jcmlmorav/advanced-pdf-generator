@@ -3,8 +3,8 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       http://example.com
- * @since      0.1.0
+ * @link       https://wordpress.org/plugins/advanced-pdf-generator
+ * @since      0.4.0
  *
  * @package    Advanced_Pdf_Generator
  * @subpackage Advanced_Pdf_Generator/admin
@@ -124,8 +124,10 @@ class Advanced_Pdf_Generator_Admin {
 			$wpdb->update(
 				$table_apdfg_values,
 				array(
+					'download'			=> isset($_POST['download']),
 					'download_text' 	=> $_POST['download_text'],
 					'download_class' 	=> $_POST['download_class'],
+					'send'				=> isset($_POST['send']),
 					'send_text' 		=> $_POST['send_text'],
 					'send_class' 		=> $_POST['send_class'],
 					'name_label' 		=> $_POST['name_label'],
@@ -135,6 +137,7 @@ class Advanced_Pdf_Generator_Admin {
 					'success_message' 	=> $_POST['success_message'],
 					'error_message' 	=> $_POST['error_message'],
 					'submit_label' 		=> $_POST['submit_label'],
+					'view'				=> isset($_POST['view']),
 					'view_text' 		=> $_POST['view_text'],
 					'view_class' 		=> $_POST['view_class']
 				),

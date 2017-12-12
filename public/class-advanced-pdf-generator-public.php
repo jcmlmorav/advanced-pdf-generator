@@ -3,8 +3,8 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       http://example.com
- * @since      0.1.0
+ * @link       https://wordpress.org/plugins/advanced-pdf-generator
+ * @since      0.4.0
  *
  * @package    Advanced_Pdf_Generator
  * @subpackage Advanced_Pdf_Generator/public
@@ -120,52 +120,40 @@ class Advanced_Pdf_Generator_Public {
 	/**
 	 * Shortcode function for advanced-pdf-generator tag
 	 *
-	 * @since	0.3.1
+	 * @since	0.4.0
 	 *
 	 */
 	public function advanced_pdf_generator_shortcode( $atts = [] ) {
 
+		global $wpdb;
+
+		$table_apdfg_values = $wpdb->prefix . 'apdfg_values';
+		$values = $wpdb->get_row( "SELECT * FROM $table_apdfg_values LIMIT 1", OBJECT );
+
 		$content = "<ul id=\"advanced-pdf-generator\">";
 
-		$atts = shortcode_atts( array(
-			'download'			=> isset($atts['download']) ? true : false,
-			'download_text' 	=> 'Download PDF',
-			'download_class' 	=> 'download-pdf',
-			'send'				=> isset($atts['send']) ? true : false,
-			'send_text' 		=> 'Send PDF',
-			'send_class' 		=> 'send-pdf',
-			'name_label'		=> 'Name',
-			'name_placeholder'  => 'Full name',
-			'email_label'		=> 'Email',
-			'email_placeholder' => 'E-mail',
-			'submit_label'		=> 'Send',
-			'view'				=> isset($atts['view']) ? true : false,
-			'view_text' 		=> 'View PDF',
-			'view_class' 		=> 'view-pdf',
-		), $atts, $this->advanced_pdf_generator );
-
-		$download = $atts['download'];
-		$send = $atts['send'];
-		$view = $atts['view'];
+		$download = $values->download;
+		$send = $values->send;
+		$view = $values->view;
 
 		if( $view || $download || $send ) {
 			$file_url = $this->generate_pdf();
 		}
 
 		if( $download ) {
-			$download_text = $atts['download_text'];
-			$download_class = $atts['download_class'];
+			$download_text = $values->download_text;
+			$download_class = $values->download_class;
 			$content .= "<li><a class=\"$this->advanced_pdf_generator $download_class\" href=\"$file_url\" download>$download_text</a></li> ";
 		}
 
 		if( $send ) {
-			$send_text = $atts['send_text'];
-			$send_class = $atts['send_class'];
-			$name_label = $atts['name_label'];
-			$name_placeholder = $atts['name_placeholder'];
-			$email_label = $atts['email_label'];
-			$email_placeholder = $atts['email_placeholder'];
-			$submit_label = $atts['submit_label'];
+			$send_text = $values->send_text;
+			$send_class = $values->send_class;
+			$name_label = $values->name_label;
+			$name_placeholder = $values->name_placeholder;
+			$email_label = $values->email_label;
+			$email_placeholder = $values->email_placeholder;
+			$submit_label = $values->submit_label;
 			$content .= "<li><a class=\"$this->advanced_pdf_generator $send_class\" href=\"javascript:;\" onclick=\"send_apdfg()\" data-toggle=\"modal\" data-target=\"#modal-send\">$send_text</a></li>
 			<script>
 				function send_apdfg() {
@@ -190,8 +178,8 @@ class Advanced_Pdf_Generator_Public {
 		}
 
 		if( $view ) {
-			$view_text = $atts['view_text'];
-			$view_class = $atts['view_class'];
+			$view_text = $values->view_text;
+			$view_class = $values->view_class;
 			$content .= "<li><a class=\"$this->advanced_pdf_generator $view_class\" target=\"_blank\" href=\"$file_url\">$view_text</a></li> ";
 		}
 
@@ -201,7 +189,7 @@ class Advanced_Pdf_Generator_Public {
 				$content .= "<script>
 				window.onload = function() {
 					swal({
-						title: 'Email sent!',
+						title: '$values->success_message',
 						type: 'success'
 					});
 				 }
@@ -210,7 +198,7 @@ class Advanced_Pdf_Generator_Public {
 				$content .= "<script>
 				window.onload = function() {
 					swal({
-						title: 'Email NOT sent!',
+						title: '$values->error_message',
 						type: 'error'
 					});
 				 }
