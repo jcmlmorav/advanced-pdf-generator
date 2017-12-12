@@ -22,11 +22,17 @@ This WordPress plugin allow to you, generate a PDF file from a specific template
 1. Upload the plugin files to the `/wp-content/plugins/advanced-pdf-generator` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress
 
+== Change log ==
+
+**Important changes
+
+- v0.4.0 Labels, texts and features, now are managed from the admin pane
+
 == How to ==
 
 Put the below shortcode where you want to access Advanced PDF Generator features.
 
-**You need to set true the features you want to enable**
+**To enable specific features go to admin menu in dashboard: Advanced PDF Generator**
 
 `[advanced-pdf-generator]`
 
@@ -34,17 +40,17 @@ Follow next steps for customize labels, texts and function
 
 #### View PDF
 
-`[advanced-pdf-generator view="true" view_text="View PDF" view_class="view-apdfg-link"]`
+In admin pane check view option and type values for this feature
 
 #### Download PDF
 
-`[advanced-pdf-generator download="true" download_text="Download PDF" download_class="download-apdfg-link"]`
+In admin pane check download option and type values for this feature
 
 #### Send PDF
 
 **Important:** If you want to send PDF via email, you need the correct setup to send emails from your WP site
 
-`[advanced-pdf-generator send="true" send_text="Send PDF" send_class="send-apdfg-link" name_label="Name" name_placeholder="Write your name" email_label="E-mail" email_placeholder="Write your email" submit_label="Send"]`
+In admin pane check send option and type values for this feature, set form labels and success-error messages
 
 == Templates ==
 

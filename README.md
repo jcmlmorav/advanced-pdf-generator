@@ -10,7 +10,7 @@ Download .zip file and install in WordPress plugin directory.
 
 Put the below shortcode where you want to access Advanced PDF Generator features.
 
-**You need to set true the features you want to enable**
+**To enable specific features go to admin menu in dashboard: Advanced PDF Generator**
 
 `[advanced-pdf-generator]`
 
@@ -18,17 +18,17 @@ Follow next steps for customize labels and texts
 
 #### View PDF
 
-`[advanced-pdf-generator view="true" view_text="View PDF" view_class="view-apdfg-link"]`
+In admin pane check view option and type values for this feature
 
 #### Download PDF
 
-`[advanced-pdf-generator download="true" download_text="Download PDF" download_class="download-apdfg-link"]`
+In admin pane check download option and type values for this feature
 
 #### Send PDF
 
 **Important:** If you want to send PDF via email, you need the correct setup to send emails from your WP site
 
-`[advanced-pdf-generator send="true" send_text="Send PDF" send_class="send-apdfg-link" name_label="Name" name_placeholder="Write your name" email_label="E-mail" email_placeholder="Write your email" submit_label="Send"]`
+In admin pane check send option and type values for this feature, set form labels and success-error messages
 
 ## Templates
 
